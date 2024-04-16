@@ -1,0 +1,21 @@
+{
+    "name": "titoi/app-salon_php_mvc_js_sass",
+    "description": "Proyecto php, MVC, SQL, SASS, GULP, API",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "MVC\\" : "./",
+            "Controllers\\" : "./controllers/",
+            "Model\\" : "./models/"
+        }
+    },
+    "authors": [
+        {
+            "name": "titoiriepal",
+            "email": "titoiriepal@hotmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
