@@ -10,7 +10,9 @@
 <body>
 
     <div class="contenedor-app">
-        <div class="imagen"></div>
+        <div class="imagen">
+            <img src="build/img/1.jpg" alt="Carrusel de fotos del Salón" class="activa">
+        </div>
 
         <div class="app">
             <?php echo $contenido; ?>
@@ -18,6 +20,6 @@
     </div>
 
     
-            
+    <script src="/build/js/app.js"></script>            
 </body>
 </html>
