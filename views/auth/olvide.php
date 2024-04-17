@@ -12,8 +12,10 @@
             required
         />
     </div>
-
+    <span>
     <input type="submit" class="boton" value="Enviar Instrucciones">
+    </span>
+    
 
 
 </form>
