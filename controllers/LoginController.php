@@ -9,10 +9,46 @@ use MVC\Router;
 class LoginController{
 
     public static function login(Router $router){
-        
+        $alertas = [];
 
+        if($_SERVER["REQUEST_METHOD"] === "POST"){
+            $auth = new Usuario($_POST);
+            //Validamos los campos del formulario
+            $alertas = $auth->validarLogin();
+            if(empty($alertas)){
+                //Buscamos  al usuario en la base de datos
+                $usuario = array_shift(Usuario::where('email', $auth->email));
+                if(empty($usuario)){ //Si no existe el usario...
+                    Usuario::setAlerta('error', 'El email no corresponde con ningún usuario');
+                    $alertas = Usuario::getAlertas(); 
+                }else{//Si existe el usario validamos su contraseña y que ya esté confirmado
+                    if($usuario->comprobarPasswordAndVerificado($auth->password)){//autentificamos al usuario
+                        session_start();
+                        $_SESSION['id'] = $usuario->id;
+                        $_SESSION['nombre'] = $usuario->nombre .' '. $usuario->apellido;
+                        $_SESSION['email'] = $usuario->email;
+                        $_SESSION['login'] =  true;
+
+                        //REDIRECCIONAMIENTO
+                        if($usuario->admin){
+                            header('location:/admin');
+                        }else{
+                            header('location:/cita');
+                        }
+                    }else{
+                        Usuario::setAlerta('error', 'El password no es correcto o el usuario no está confirmado o activo');
+                    }
+                    
+                    
+                    
+                }
+            }
+            
+        }
+        $alertas = Usuario::getAlertas();
         $router->render('auth/login',[
-            'titulo' => 'App Salon Login'
+            'titulo' => 'App Salon Login',
+            'alertas' =>  $alertas
         ]);
     }
 

@@ -54,7 +54,7 @@ class Usuario extends ActiveRecord{
         }
 
         if(!$this->email){
-            self::$alertas['error'][] = 'Debes añadir, al menos, un apellido para el usuario';
+            self::$alertas['error'][] = 'Debes introducir un emai';
         }else if( strlen($this->email) > 45){
             self::$alertas['error'][] = 'El email no puede superar los 45 caracteres';
         }
@@ -68,6 +68,17 @@ class Usuario extends ActiveRecord{
         return (self::$alertas);
 
         
+    }
+
+    public function validarLogin(){
+        if(!$this->email){
+            self::$alertas['error'][] = 'Debes introducir un email';
+        }
+        if(!$this->password){
+            self::$alertas['error'][] = 'Introduce un password';
+        }
+
+        return (self::$alertas);
     }
 
     public function existeUsuario(){
@@ -85,5 +96,9 @@ class Usuario extends ActiveRecord{
 
     public function generarToken(){
         $this->token = uniqid();
+    }
+
+    public function comprobarPasswordAndVerificado($password){
+        return  password_verify($password,$this->password) && $this->confirmado && $this->activo;
     }
 }
