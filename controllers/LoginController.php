@@ -31,19 +31,16 @@ class LoginController{
 
                         //REDIRECCIONAMIENTO
                         if($usuario->admin){
+                            $_SESSION['admin'] = true;
                             header('location:/admin');
                         }else{
                             header('location:/cita');
                         }
                     }else{
                         Usuario::setAlerta('error', 'El password no es correcto o el usuario no está confirmado o activo');
-                    }
-                    
-                    
-                    
+                    }          
                 }
-            }
-            
+            }   
         }
         $alertas = Usuario::getAlertas();
         $router->render('auth/login',[
@@ -58,14 +55,82 @@ class LoginController{
 
     public static function olvide(Router $router) {
 
+        $alertas = [];
+
+        if($_SERVER["REQUEST_METHOD"] === "POST"){
+            $auth = new Usuario($_POST);
+            $alertas = $auth->validarEmail();
+            if(empty($alertas)){
+                $usuario = array_shift(Usuario::where('email', $auth->email));
+                if(empty($usuario)){ //Si no existe el usario...
+                    Usuario::setAlerta('error', 'El email no corresponde con ningún usuario');
+                    $alertas = Usuario::getAlertas(); 
+                }else{
+                    if(!$usuario->comprobarVerificado()){
+                        Usuario::setAlerta('error', 'El usuario no esta confirmado o no está activo');
+                        $alertas = Usuario::getAlertas(); 
+                    }else{
+                        //Generamos un toke
+                        $usuario->generarToken();
+                        $usuario->guardar();
+
+                        //Enviamos un correo para recuperar la contraseña
+                        $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
+                        $email->enviarInstrucciones();
+
+                        //Alertas
+                        Usuario::setAlerta('exito', 'Te enviamos un correo a tu mail para recuperar la contraseña');
+                        $alertas = Usuario::getAlertas(); 
+                    }
+                }
+
+            }
+        }
 
         $router->render('auth/olvide',[
-            'titulo' => 'App Salon Recuperar Password'
+            'titulo' => 'App Salon Recuperar Password',
+            'alertas' => $alertas
         ]);
     }
 
-    public static function recuperar(){
-        echo "Desde Recuperar password";
+    public static function recuperar(Router $router){
+
+        $alertas = [];
+        $error = false;
+        $token   = s($_GET['token']) ??  '';
+        $usuario = array_shift(Usuario::where('token', $token));
+        if (empty($usuario) || !$usuario->activo){
+            Usuario::setAlerta('error', 'El token proporcionado no es valido'); 
+            $error = true;
+        }
+
+        if($_SERVER["REQUEST_METHOD"] === "POST"){
+
+            $password = new Usuario($_POST);
+            $alertas = $password->validarPassword();
+
+            if(empty($alertas)){
+                if($_POST['password'] != $_POST['confirma']){
+                    Usuario::setAlerta('error','Las contraseñas introducidas no coinciden.');
+                }else{
+                    
+                    $usuario->password = $password->password;
+                    $usuario->hashPassword();
+                    $usuario->token = null;
+                    if($usuario->guardar()){
+                        header('location: /');
+                    }
+                }
+            }
+        }
+        
+        $alertas = Usuario::getAlertas();
+        $router->render('auth/recuperar',[
+            'titulo' => 'App Salon Reestablecer Contraseña',
+            'alertas' => $alertas,
+            'error' => $error
+
+        ]);
     }
 
     public static function crear(Router $router){

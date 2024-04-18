@@ -81,6 +81,24 @@ class Usuario extends ActiveRecord{
         return (self::$alertas);
     }
 
+    public function validarEmail(){
+        if(!$this->email){
+            self::$alertas['error'][] = 'Debes introducir un email';
+        }
+
+        return (self::$alertas);
+    }
+
+    public function validarPassword(){
+        if(!$this->password){
+            self::$alertas['error'][] = 'Introduce un password';
+        }else if(strlen($this->password) < 8){
+            self::$alertas['error'][]= "La contraseña debe tener al menos 8 carácteres";
+        }
+
+        return (self::$alertas);
+    }
+
     public function existeUsuario(){
         $existeUsuario = Usuario::consultarSQL("SELECT * FROM " . self::$tabla ." WHERE email = '" . $this->email . "' LIMIT 1");
         if(!empty($existeUsuario)){
@@ -100,5 +118,9 @@ class Usuario extends ActiveRecord{
 
     public function comprobarPasswordAndVerificado($password){
         return  password_verify($password,$this->password) && $this->confirmado && $this->activo;
+    }
+
+    public function comprobarVerificado(){
+        return  $this->confirmado && $this->activo;
     }
 }

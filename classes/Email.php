@@ -51,7 +51,40 @@ class Email{
 
         $mail->Body = $contenido;
 
-        $respuesta = $mail->send();
+        $mail->send();
+ 
+    }
+
+    public function enviarInstrucciones(){
+
+        $dotenv = Dotenv::createImmutable(__DIR__ .'/..');
+        $dotenv->load();
+        $mail = new PHPMailer();
+
+        //Configuramos SMTP
+        $mail->isSMTP();
+        $mail->Host = 'sandbox.smtp.mailtrap.io';
+        $mail->SMTPAuth = true;
+        $mail->Port = 2525;
+        $mail->Username = $_SERVER['MAIL_USER'];
+        $mail->Password = $_SERVER['MAIL_PWD'];
+        $mail->SMTPSecure = 'tls';
+
+        $mail->setFrom('cuentas@appsalon.com'); //Dominio que se cree para la web
+        $mail->addAddress('cuentas@appsalon.com', 'Appsalon.com');//Correo electronico y nombre del remitente
+        $mail->Subject = 'Restablece tu password para AppSalon';
+        $mail->isHTML(true);
+        $mail->CharSet = 'UTF-8';
+
+        $contenido = "<html>";
+        $contenido .= "<p><strong>Hola " . $this->nombre  . "</strong> Has solicitado reestablecer tu password. Sigue el siguiente enlace para hacerlo</p>";
+        $contenido .=  "<p>Presiona aquí: <a href='http://localhost:33000/recuperar?token=". $this->token ."'>Reestablecer Password</a></p>";
+        $contenido .= "<p>Si tú no solicitaste reestablecer tu password, ignora este mensaje</p>";
+        $contenido .= "</html>";
+
+        $mail->Body = $contenido;
+
+        $mail->send();
  
     }
 
