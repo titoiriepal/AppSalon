@@ -17,7 +17,7 @@ class LoginController{
             $alertas = $auth->validarLogin();
             if(empty($alertas)){
                 //Buscamos  al usuario en la base de datos
-                $usuario = array_shift(Usuario::where('email', $auth->email));
+                $usuario = Usuario::where('email', $auth->email);
                 if(empty($usuario)){ //Si no existe el usario...
                     Usuario::setAlerta('error', 'El email no corresponde con ningún usuario');
                     $alertas = Usuario::getAlertas(); 
@@ -61,7 +61,7 @@ class LoginController{
             $auth = new Usuario($_POST);
             $alertas = $auth->validarEmail();
             if(empty($alertas)){
-                $usuario = array_shift(Usuario::where('email', $auth->email));
+                $usuario = Usuario::where('email', $auth->email);
                 if(empty($usuario)){ //Si no existe el usario...
                     Usuario::setAlerta('error', 'El email no corresponde con ningún usuario');
                     $alertas = Usuario::getAlertas(); 
@@ -98,7 +98,8 @@ class LoginController{
         $alertas = [];
         $error = false;
         $token   = s($_GET['token']) ??  '';
-        $usuario = array_shift(Usuario::where('token', $token));
+        $usuario = Usuario::where('token', $token);
+
         if (empty($usuario) || !$usuario->activo){
             Usuario::setAlerta('error', 'El token proporcionado no es valido'); 
             $error = true;
@@ -180,7 +181,7 @@ class LoginController{
 
         $alertas = [];
         $token   = s($_GET['token']) ??  '';
-        $usuario = array_shift(Usuario::where('token', $token));
+        $usuario = Usuario::where('token', $token);
         if (empty($usuario)){
             Usuario::setAlerta('error', 'El token proporcionado no es valido'); 
         }else{
