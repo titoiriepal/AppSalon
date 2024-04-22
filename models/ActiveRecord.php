@@ -109,6 +109,20 @@ class ActiveRecord {
         return $resultado;
     }
 
+    //Todos los registros activos
+    public static function allActive() {
+        $query = "SELECT * FROM " . static::$tabla . " WHERE activo = 1" ;
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+
+    //Todos los registros activos
+    public static function allInctive() {
+        $query = "SELECT * FROM " . static::$tabla . " WHERE activo = 0" ;
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+
     // Busca un registro por su id
     public static function find($id) {
         $query = "SELECT * FROM " . static::$tabla  ." WHERE id = $id";

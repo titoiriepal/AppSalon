@@ -1,5 +1,5 @@
 <datalist id="work-hours">
-  <option value="09:00"></option>
+ <option value="09:00"></option>
   <option value="09:15"></option>
   <option value="09:30"></option>
   <option value="09:45"></option>
@@ -78,7 +78,7 @@
                     type="date" 
                     name="fecha" 
                     id="fecha"
-                    min="<?php echo date("Y-m-d")?>"
+                    min="<?php echo date("Y-m-d", strtotime('+1 day'));?>"
                 />
             </div>
 
@@ -92,11 +92,12 @@
                     max="19:00"
                     list="work-hours"
                 />
+                <span class="validity"></span>
             </div>
         </form>
 
     </div>
-    <div class="seccion-citas" id="paso-3">
+    <div class="seccion-citas contenido-resumen" id="paso-3">
         <h2>Resumen</h2>
         <p class="text-center">Verifica que la información sea correcta</p>
 
