@@ -12,3 +12,11 @@ function s($html) : string {
     $s = htmlspecialchars($html);
     return $s;
 }
+
+//Revisar que el usario ha iniciado sesion
+
+function isAuth() : void{
+    if (!isset($_SESSION['login'])) {
+        header( "Location: /" ); 
+    }
+}

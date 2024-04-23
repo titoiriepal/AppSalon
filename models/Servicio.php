@@ -21,4 +21,10 @@ class Servicio extends ActiveRecord{
         $this->precio = $args['precio'] ?? 0.0;
         $this->activo = $args['activo'] ?? 1;
     }
+
+    public static function consultarPrecio($id){
+        $precio = Servicio::consultarSQL("SELECT precio FROM " . self::$tabla . " WHERE id = '" . $id ."'");
+
+        return array_shift($precio);
+    }
 }

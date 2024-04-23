@@ -10,14 +10,15 @@ class CitaController{
     public static function index (Router  $router){
 
         session_start();
-        $nombre = $_SESSION["nombre"];
-        
 
+        isAuth();
+        $nombre = $_SESSION["nombre"];
 
 
         $router->render('cita/index', [
             'titulo'=> 'AppSalon Citas',
-            'nombre'  => $nombre
+            'nombre'  => $nombre,
+            'usuarioId' =>  $_SESSION['id']
         ]);
 
     }
