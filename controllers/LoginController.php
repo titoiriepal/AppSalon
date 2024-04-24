@@ -50,6 +50,7 @@ class LoginController{
     }
 
     public static function logout(){
+        session_start();
         $_SESSION = [];
         header('location: /');
     
@@ -204,8 +205,6 @@ class LoginController{
             'alertas' => $alertas
         ]);
     }
-
-
 
     public static function mensaje(Router $router){
 

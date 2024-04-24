@@ -116,7 +116,7 @@ class ActiveRecord {
         return $resultado;
     }
 
-    //Todos los registros activos
+    //Todos los registros no activos
     public static function allInctive() {
         $query = "SELECT * FROM " . static::$tabla . " WHERE activo = 0" ;
         $resultado = self::consultarSQL($query);
@@ -130,11 +130,20 @@ class ActiveRecord {
         return array_shift( $resultado ) ;
     }
 
+    //Obtener registros que cumplan la condición $columna = $valor
     public static function where($columna, $valor) {
         $query = "SELECT * FROM " . static::$tabla  ." WHERE $columna = '$valor'";
         $resultado = self::consultarSQL($query);
         return array_shift( $resultado ) ;
     }
+
+    //Consulta plana de SQL para utilizar cuando los métodos del modelo no son suficientes
+    public static function SQL($query) {
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+
+
 
     // Obtener Registros con cierta cantidad
     public static function get($limite) {
