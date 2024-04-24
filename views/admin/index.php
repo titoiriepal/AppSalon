@@ -8,17 +8,28 @@
 <div class="busqueda">
     <form action="" class="formulario">
         <div class="campo">
-            <label for="fecha">Fecha:</label>
-            <input 
-                type="date" 
-                id="fecha" 
-                name="fecha"
-            />
+            <label for="year">Año:</label>
+            <select id="year" name="year" onchange="updateMonths()">
+                <option>--Seleccione una opcion--</option>
+            </select>
+        </div>
+        <div class="campo">
+            <label for="mes">Mes:</label>
+            <select id="mes" name="mes" onchange="updateDays()">
+                <option>--Seleccione una opcion--</option>
+            </select>
+        </div>
+        <div class="campo">
+            <label for="dia">Día:</label>
+            <select id="dia" name="dia">
+                <option>--Seleccione una opcion--</option>
+            </select>
         </div>
     </form>
 </div>
 
 <div class="citas-admin">
+    <h3>Fechas del : <?php echo $fecha?></h3>
     <ul class="citas">
         <?php 
             $idCita = '';
@@ -53,10 +64,16 @@
                     </li>  
                             
                         <?php 
-                            
                         }//endIf
         } //end foreach?>
     </ul>
 
 
 </div>
+
+<?php 
+    $script =  "
+        <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+        <script src='build/js/admin.js'></script>
+    ";
+?>

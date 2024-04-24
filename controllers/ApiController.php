@@ -43,4 +43,9 @@ class ApiController{
 
         echo json_encode($respuesta);
     }
+
+    public static function fechas(){
+        $fechas = Cita::getDates();
+        echo json_encode($fechas);
+    }
 }

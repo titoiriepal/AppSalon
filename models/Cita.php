@@ -22,4 +22,13 @@ class Cita extends ActiveRecord{
         $this->activo = $args['activo'] ?? 1;
     }
 
+    public static function getDates(){
+        $citas = Cita::consultarSQL("SELECT DISTINCT(fecha) FROM " . self::$tabla );
+        $fechas = [];
+        foreach ($citas as $fecha){
+            $fechas[] = $fecha->fecha;
+        }
+        return $fechas;
+    }
+
 }
