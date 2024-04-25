@@ -32,10 +32,12 @@ class AdminController{
         $consulta .= " ON servicios.id=citasServicios.servicioId ";
         $consulta .= " WHERE fecha =  '$fecha' ";
         if ($tipoCita === "canceladas"){
-            $consulta .= "AND citas.activo = 0";
+            $consulta .= "AND citas.activo = 0 ";
         }elseif ($tipoCita !== 'todas') {
-            $consulta .= "AND citas.activo = 1";
+            $consulta .= "AND citas.activo = 1 ";
         }
+        $consulta .= "ORDER BY citas.hora";
+        
 
 
         $citas = AdminCita::SQL($consulta);

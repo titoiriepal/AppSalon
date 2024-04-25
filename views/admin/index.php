@@ -54,9 +54,19 @@
                     $total = 0;?>
                     
                     <li>
-                        <p>ID: <span><?php echo $cita->id;?></span></p>
+                        <div>
                         <p>Hora: <span><?php echo $cita->hora;?></span></p>
                         <p>Cliente: <span><?php echo $cita->cliente;?></span></p>
+                        <?php 
+                            if($cita->activo === '0') {
+                                echo "<div class='alerta error'>Cita cancelada</div>";
+                            } 
+                        ?>
+                        <button class="boton boton-mostrar" data-idCita="cita<?php echo $cita->id;?>">Mostrar/Ocultar Datos</button>
+                        </div>
+
+                        <div class="datos-cita ocultar" id="cita<?php echo $cita->id;?>">
+                        <p>ID: <span><?php echo $cita->id;?></span></p>
                         <p>Email: <span><?php echo $cita->email;?></span></p>
                         <p>Teléfono: <span><?php echo $cita->telefono;?></span></p>
                         <h3>Servicios</h3>
@@ -85,6 +95,7 @@
                         <?php 
                             } 
                         ?>
+                        </div>
                     </li>  
                             
                         <?php 
