@@ -13,6 +13,7 @@ class AdminController{
         isAuth();
 
         $fecha = $_GET['fecha'] ?? date('Y-m-d');
+        $tipoCita = $_GET['tipoCitas'];
         $validarFecha = explode('-',$fecha);
 
         if(!checkdate($validarFecha[1], $validarFecha[2], $validarFecha[0])){
@@ -21,7 +22,7 @@ class AdminController{
 
         //Consultar la base de datos
         $consulta = "SELECT citas.id, citas.hora, CONCAT( usuarios.nombre, ' ', usuarios.apellido) as cliente, ";
-        $consulta .= " usuarios.email, usuarios.telefono, servicios.nombre as servicio, servicios.precio  ";
+        $consulta .= " usuarios.email, usuarios.telefono, servicios.nombre as servicio, servicios.precio, citas.activo  ";
         $consulta .= " FROM citas  ";
         $consulta .= " LEFT OUTER JOIN usuarios ";
         $consulta .= " ON citas.usuarioId=usuarios.id  ";
@@ -30,14 +31,23 @@ class AdminController{
         $consulta .= " LEFT OUTER JOIN servicios ";
         $consulta .= " ON servicios.id=citasServicios.servicioId ";
         $consulta .= " WHERE fecha =  '$fecha' ";
+        if ($tipoCita === "canceladas"){
+            $consulta .= "AND citas.activo = 0";
+        }elseif ($tipoCita !== 'todas') {
+            $consulta .= "AND citas.activo = 1";
+        }
+
 
         $citas = AdminCita::SQL($consulta);
 
+        
+        $fechaImp = date("d-m-Y", strtotime($fecha));
         $router->render('admin/index', [
             'title'=> 'Administrador de App Salon',
             'nombre' =>  $_SESSION['nombre'],
             'citas' =>  $citas,
-            'fecha' =>  $fecha
+            'fecha' =>  $fechaImp,
+            'tipoCita' =>  $tipoCita ?? 'activas'
         ]);
     }
 }

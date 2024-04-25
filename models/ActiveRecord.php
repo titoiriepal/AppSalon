@@ -117,7 +117,7 @@ class ActiveRecord {
     }
 
     //Todos los registros no activos
-    public static function allInctive() {
+    public static function allInactive() {
         $query = "SELECT * FROM " . static::$tabla . " WHERE activo = 0" ;
         $resultado = self::consultarSQL($query);
         return $resultado;
@@ -199,6 +199,13 @@ class ActiveRecord {
         $query = "DELETE FROM "  . static::$tabla . " WHERE id = " . self::$db->escape_string($this->id) . " LIMIT 1";
         $resultado = self::$db->query($query);
         return $resultado;
+    }
+
+    public function desactivar(){
+        $query =  "UPDATE ".static::$tabla." set activo=0 where id=".$this->id;
+        $resultado = self::$db->query($query);
+        return $resultado;
+        
     }
 
 }

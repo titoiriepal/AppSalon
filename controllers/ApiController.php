@@ -7,13 +7,14 @@ use Model\CitaServicio;
 use Model\Servicio;
 
 class ApiController{
+
     public static function index(){
 
-    $servicios = Servicio::allActive();
-    echo json_encode($servicios);
+        $servicios = Servicio::allActive();
+       
+        echo json_encode($servicios);
 
     }
-
 
     public static function guardar(){
         
@@ -47,5 +48,17 @@ class ApiController{
     public static function fechas(){
         $fechas = Cita::getDates();
         echo json_encode($fechas);
+    }
+
+    public static function eliminar(){
+
+        if($_SERVER["REQUEST_METHOD"] === "POST"){
+            $id = $_POST['id'];
+
+            $cita = Cita::find($id);
+            $cita->desactivar();
+
+            header('Location: '. $_SERVER['HTTP_REFERER']);
+        }
     }
 }

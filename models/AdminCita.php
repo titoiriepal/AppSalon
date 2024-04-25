@@ -14,6 +14,7 @@ class AdminCita extends ActiveRecord{
     public $telefono;
     public $servicio;
     public $precio;
+    public $activo;
 
     public function __construct($args = [])
     {
@@ -24,5 +25,6 @@ class AdminCita extends ActiveRecord{
         $this->telefono = $args['telefono'] ?? '';
         $this->servicio = $args['servicio'] ?? '';
         $this->precio = $args['precio'] ?? '';
+        $this->activo = $args['activo'] ?? '';
     }
 }

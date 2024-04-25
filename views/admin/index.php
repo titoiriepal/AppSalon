@@ -7,29 +7,43 @@
 <h2>Buscar Citas</h2>
 <div class="busqueda">
     <form action="" class="formulario">
+    <div class="campo">
+            <label for="mostrarTipoCitas">Mostrar:</label>
+            <select id="mostrarTipoCitas" name="mostrarTipoCitas">
+                <option value="activas"<?php echo ($tipoCita === 'activas') ? 'selected' : ''?>>Citas Activas</option>
+                <option value="todas"<?php echo ($tipoCita === 'todas') ? 'selected' : ''?>>Todas las citas</option>  
+                <option value="canceladas"<?php echo ($tipoCita === 'canceladas') ? 'selected' : ''?>>Citas Canceladas</option>
+            </select>
+        </div>
         <div class="campo">
             <label for="year">Año:</label>
             <select id="year" name="year" onchange="updateMonths()">
-                <option>--Seleccione una opcion--</option>
+                <option>Seleccione</option>
             </select>
         </div>
         <div class="campo">
             <label for="mes">Mes:</label>
             <select id="mes" name="mes" onchange="updateDays()">
-                <option>--Seleccione una opcion--</option>
             </select>
         </div>
         <div class="campo">
             <label for="dia">Día:</label>
             <select id="dia" name="dia">
-                <option>--Seleccione una opcion--</option>
             </select>
         </div>
+
     </form>
 </div>
 
+<?php 
+    if(count($citas) === 0){
+        echo "<div class='alerta error'>No Hay citas para este día</div>";
+    }
+?>
+
+
 <div class="citas-admin">
-    <h3>Fechas del : <?php echo $fecha?></h3>
+    <h3>Citas del : <?php echo $fecha?></h3>
     <ul class="citas">
         <?php 
             $idCita = '';
@@ -61,6 +75,16 @@
 
                         if($idCita !==  $proximo) {?>
                             <p class="total">Total: <span><?php echo $total.' €';?></span></p>
+                        <?php 
+                            if($cita->activo === '1'){ 
+                        ?>
+                            <form action="/api/eliminar" method="POST">
+                                <input type="hidden" name="id" value="<?php echo $cita->id;?>"/>
+                                <input type="submit" class="boton-eliminar" value="Eliminar">
+                            </form>
+                        <?php 
+                            } 
+                        ?>
                     </li>  
                             
                         <?php 

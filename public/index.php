@@ -44,6 +44,7 @@ $router->get('/admin',[AdminController::class, 'index']);
 $router->get('/api/servicios',[ApiController::class, 'index']);
 $router->post('/api/citas', [ApiController::class, 'guardar']);
 $router->get('/api/fechas', [ApiController::class, 'fechas']);
+$router->post('/api/eliminar', [ApiController::class, 'eliminar']);
 
 
 
