@@ -6,7 +6,7 @@
 
 <h2>Buscar Citas</h2>
 <div class="busqueda">
-    <form action="" class="formulario">
+    <form action="" class="formulario formulario-admin">
     <div class="campo">
             <label for="mostrarTipoCitas">Mostrar:</label>
             <select id="mostrarTipoCitas" name="mostrarTipoCitas">
@@ -43,9 +43,14 @@
 
 
 <div class="citas-admin">
-    <h3>Citas del : <?php echo $fecha?></h3>
+    <div class="nav-fechas">
+        <button class="boton boton-fecha" id='botFechaAnterior' data-fecha='<?php echo date("Y-m-d",strtotime($fecha))?>' ><<</button>
+    <h3>Citas del : <?php echo $fechaImp?></h3>
+        <button class="boton boton-fecha" id='botFechaSiguiente' data-fecha='<?php echo date("Y-m-d",strtotime($fecha))?>'>>> </button>
+    </div>
     <ul class="citas">
         <?php 
+
             $idCita = '';
             foreach($citas as $key => $cita){
 
@@ -55,14 +60,17 @@
                     
                     <li>
                         <div>
+                        <div class="first-line">               
                         <p>Hora: <span><?php echo $cita->hora;?></span></p>
+                        <button class="boton boton-mostrar" data-idCita="cita<?php echo $cita->id;?>">Mostrar/Ocultar Datos</button> 
+                        </div>
                         <p>Cliente: <span><?php echo $cita->cliente;?></span></p>
                         <?php 
                             if($cita->activo === '0') {
                                 echo "<div class='alerta error'>Cita cancelada</div>";
                             } 
                         ?>
-                        <button class="boton boton-mostrar" data-idCita="cita<?php echo $cita->id;?>">Mostrar/Ocultar Datos</button>
+                        
                         </div>
 
                         <div class="datos-cita ocultar" id="cita<?php echo $cita->id;?>">
@@ -75,6 +83,7 @@
 
                         <?php 
                             } //end if
+                        
                             $total = $total + intval($cita->precio);
                         ?>
                             <p class="servicio"><?php echo $cita->servicio;?> ---- <?php echo $cita->precio;?> €</p>  
@@ -96,6 +105,7 @@
                             } 
                         ?>
                         </div>
+                        
                     </li>  
                             
                         <?php 

@@ -48,7 +48,8 @@ class AdminController{
             'title'=> 'Administrador de App Salon',
             'nombre' =>  $_SESSION['nombre'],
             'citas' =>  $citas,
-            'fecha' =>  $fechaImp,
+            'fechaImp' =>  $fechaImp,
+            'fecha' =>  $fecha,
             'tipoCita' =>  $tipoCita ?? 'activas'
         ]);
     }
