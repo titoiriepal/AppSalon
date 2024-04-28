@@ -168,7 +168,7 @@ class ActiveRecord {
         $resultado = self::$db->query($query);
         return [
            'resultado' =>  $resultado,
-           'id' => self::$db->insert_id
+           'id' => $this->id
         ];
     }
 
@@ -203,6 +203,13 @@ class ActiveRecord {
 
     public function desactivar(){
         $query =  "UPDATE ".static::$tabla." set activo=0 where id=".$this->id;
+        $resultado = self::$db->query($query);
+        return $resultado;
+        
+    }
+
+    public function activar(){
+        $query =  "UPDATE ".static::$tabla." set activo=1 where id=".$this->id;
         $resultado = self::$db->query($query);
         return $resultado;
         

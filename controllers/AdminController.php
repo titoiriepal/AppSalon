@@ -10,10 +10,10 @@ class AdminController{
     public static function index(Router $router){
 
         session_start();
-        isAuth();
+        isAdmin();
 
         $fecha = $_GET['fecha'] ?? date('Y-m-d');
-        $tipoCita = $_GET['tipoCitas'];
+        $tipoCita = $_GET['tipoCitas'] ??  'todas';
         $validarFecha = explode('-',$fecha);
 
         if(!checkdate($validarFecha[1], $validarFecha[2], $validarFecha[0])){
@@ -45,7 +45,7 @@ class AdminController{
         
         $fechaImp = date("d-m-Y", strtotime($fecha));
         $router->render('admin/index', [
-            'title'=> 'Administrador de App Salon',
+            'titulo'=> 'Administrador de App Salon',
             'nombre' =>  $_SESSION['nombre'],
             'citas' =>  $citas,
             'fechaImp' =>  $fechaImp,
