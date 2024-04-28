@@ -38,7 +38,7 @@ ENGINE = InnoDB;
 -- Table `appsalon_mvc`.`servicios`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `appsalon_mvc`.`servicios` (
-  `id` INT(11) NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(60) NULL,
   `precio` DECIMAL(5,2) NULL,
   `activo` TINYINT NULL,
