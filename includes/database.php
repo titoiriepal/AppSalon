@@ -1,14 +1,11 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
-$dotenv->load();
 $db = new mysqli( 
-    $_SERVER["DB_HOST"], 
-    $_SERVER["DB_USER"], 
-    $_SERVER["DB_PASSWORD"], 
-    $_SERVER["DB_SCHEME"]
+    $_ENV["DB_HOST"], 
+    $_ENV["DB_USER"], 
+    $_ENV["DB_PASSWORD"], 
+    $_ENV["DB_SCHEME"]
 );
 
 

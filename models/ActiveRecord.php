@@ -168,7 +168,7 @@ class ActiveRecord {
         $resultado = self::$db->query($query);
         return [
            'resultado' =>  $resultado,
-           'id' => $this->id
+           'id' => self::$db->insert_id
         ];
     }
 
