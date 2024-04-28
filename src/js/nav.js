@@ -389,7 +389,6 @@ function mostrarResumen(){
 }
 
 async function reservarCita(){
-    alert('LLEGA');
     const{nombre, fecha, hora, servicios, usuarioId} = cita;
 
     const idServicios = servicios.map( servicio => servicio.id); //Mapeamos el arreglo de servicios y creamos un nuevo arreglo que contenga el id de cada servicio.
@@ -403,7 +402,7 @@ async function reservarCita(){
     
 
     try {
-        const url = '/api/citas'; //Establecemos la url a la que vamos a hacer la consulta
+        const url = `${location.origin}/api/citas`; //Establecemos la url a la que vamos a hacer la consulta
 
 
         const respuesta = await fetch(url, { //hacemos la consulta y pasamos como parametros la url y un arreglo con...
