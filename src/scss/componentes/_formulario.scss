@@ -1,0 +1,49 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.formulario{
+    width: 100%;
+    margin-top: 5rem;
+
+    &.formulario-admin{
+        margin-top:2rem;
+    }
+}
+
+.campo{
+    display: flex;
+    margin-bottom: 2rem;
+    align-items: center;
+
+    label{
+        flex: 0 0 10rem;
+    }
+
+    input, 
+    select{
+        flex: 1;
+        border: none;
+        padding: calc(v.$separacion / 4);
+        border-radius: 1rem;
+
+        &:disabled{
+            background-color: lighten(v.$negro, 25%);
+            color: v.$blanco;
+            cursor: not-allowed;
+        }
+
+    }
+
+}
+
+.formulario-admin .campo{
+
+    label{
+        flex: 0 0 7rem;
+    }
+
+    input, select{
+        padding: calc(v.$separacion/6);
+    }
+}
+

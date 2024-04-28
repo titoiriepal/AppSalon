@@ -1,0 +1,96 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+
+.nav-fechas{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    @include m.mediaq(v.$tablet){
+        grid-template-columns: repeat(8, 1fr);
+    }
+
+    h3{
+        grid-column: 1 / 3;
+        grid-row: 1 ;
+        margin-bottom: .5rem;
+
+        @include m.mediaq(v.$tablet){
+            grid-column: 2/ 8;
+        }
+    }
+
+
+    
+}
+
+.citas{
+    list-style: none;
+    padding: 0;
+    
+
+    li{
+
+        padding: 1rem;
+        border-top: 1px solid v.$blanco;
+        border-radius: 2px;
+
+        .first-line{
+            display: flex;
+            justify-content:space-between;
+            align-items: flex-end;
+        }
+    
+        
+        &:first-child{
+           border-top: none;
+        }
+        p{
+            font-weight: v.$bold;
+            color: lighten(v.$azul, 10%);
+            margin: 1rem 0;
+        }
+
+        span,
+        .servicio{
+            font-weight: v.$regular;
+            color: v.$blanco;
+            
+        }
+
+        &:hover{
+            background-color: lighten(v.$negro, 7%);
+        }
+
+        .total{
+            text-align: right;
+            font-size: 2.4rem;
+        }
+
+    }
+
+    
+}
+
+.servicios{
+    @extend .citas;
+}
+
+.acciones{
+
+    &.acciones-admin{
+        margin-top: 1rem;
+        @include m.mediaq(v.$tablet){
+            display:flex;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .boton{
+            margin: 1rem 0;
+            padding: 1rem 1.5rem;
+        }
+    }
+    
+    
+}

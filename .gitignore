@@ -1,11 +1,7 @@
-src/
-package.json
-package-lock.json
+
 node_modules/
-.env
 includes/.env
 info.php
 
 /vendor/
-/imagenes/
-composer.lock
+

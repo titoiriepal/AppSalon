@@ -1,0 +1,111 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.contenedor-app{
+    @include m.mediaq(v.$tablet){
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        min-height: 100vh;
+    }
+
+    .imagen{
+        height: 20rem;
+        position:relative;
+        overflow:hidden;
+
+        @include m.mediaq(v.$tablet){
+            height: auto;
+        }
+
+        img{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            opacity: 0;
+            transition: opacity 1s ease-in-out; 
+            object-fit: cover;
+
+            @include m.mediaq(250px){
+                top: -100px;
+            }
+
+            @include m.mediaq(375px){
+                top: -200px;
+            }
+
+            @include m.mediaq(v.$smallIpad){
+                top:-300px;
+            }
+
+            @include m.mediaq(615px){
+                top:-400px;
+            }
+
+            @include m.mediaq(v.$tablet){
+                top: 0;
+                height:100%;
+            }
+        }
+    }
+
+    .app{
+        width: 100%;
+        margin: 0 auto;
+        padding: 3rem 2rem;
+        @include m.mediaq(v.$tablet) {
+            overflow: scroll;
+        }
+
+        &::-webkit-scrollbar {
+            -webkit-appearance: none;
+        }
+        
+        &::-webkit-scrollbar:vertical {
+            width:10px;
+        }
+        
+        &::-webkit-scrollbar-button:increment,.app::-webkit-scrollbar-button {
+            display: none;
+        } 
+        
+        &::-webkit-scrollbar:horizontal {
+            height: 10px;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background-color: #363636;
+            border-radius: 20px;
+        }
+        
+        &::-webkit-scrollbar-track {
+            border-radius: 10px;  
+        }
+    }
+
+
+}
+
+.barra-servicios{
+    margin-bottom: calc(v.$separacion / 4);
+
+    .boton{
+        margin: 1.5rem 0;
+    }
+
+
+
+    @include m.mediaq(v.$desktop){
+        display:flex;
+        justify-content: space-around;
+
+
+        .boton{
+            padding: 1rem 1.5rem;
+            
+            font-size: 1.8rem;
+        }
+    }
+    }
+

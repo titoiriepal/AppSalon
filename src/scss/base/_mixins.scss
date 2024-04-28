@@ -1,0 +1,59 @@
+@use 'base/variables' as v;
+
+
+/** Media Queries **/
+@mixin mediaq ($size) {
+    @media (min-width: $size){
+        @content;
+    }
+}
+
+@mixin bg-image{
+    background-position: center center;
+    background-size: cover;
+}
+
+
+@mixin boton($bgColor, $colorTexto) {
+    background-color: $bgColor;
+    padding: 1.5rem 4rem;
+    color: darken( $colorTexto, 10% );
+    margin-top: 2rem;
+    font-size: 2rem;
+    font-weight: 400;
+    display: inline-block;
+    font-weight: 700;
+    border: none;
+    transition-property: all;
+    transition-duration: .3s;
+    text-align: center;
+    display: block;
+    width: 100%;
+    margin: 5rem 0;
+    border-radius: 5px;
+    -webkit-box-shadow: 10px 10px 29px 7px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 29px 7px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 29px 7px rgba(0,0,0,0.75);
+
+    @include mediaq(v.$tablet){
+        width: auto;
+    }
+
+    &:hover {
+        background-color: darken( $bgColor, 10% );
+        color: $colorTexto;
+        -webkit-box-shadow: 10px 10px 5px 4px rgba(0,0,0,0.75);
+        -moz-box-shadow: 10px 10px 5px 4px rgba(0,0,0,0.75);
+        box-shadow: 10px 10px 5px 4px rgba(0,0,0,0.75);
+        cursor: pointer;
+    }
+}
+
+
+
+
+@mixin grid($columnas, $espaciado ) {
+    display: grid;
+    gap: $espaciado;
+    grid-template-columns: repeat($columnas, 1fr);
+}
