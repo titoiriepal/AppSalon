@@ -111,14 +111,14 @@ class ActiveRecord {
 
     //Todos los registros activos
     public static function allActive() {
-        $query = "SELECT * FROM " . static::$tabla . " WHERE activo = 1" ;
+        $query = "SELECT * FROM " . static::$tabla . " WHERE activo = '1'" ;
         $resultado = self::consultarSQL($query);
         return $resultado;
     }
 
     //Todos los registros no activos
     public static function allInactive() {
-        $query = "SELECT * FROM " . static::$tabla . " WHERE activo = 0" ;
+        $query = "SELECT * FROM " . static::$tabla . " WHERE activo = '0'" ;
         $resultado = self::consultarSQL($query);
         return $resultado;
     }
