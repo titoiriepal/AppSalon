@@ -48,7 +48,7 @@ class Servicio extends ActiveRecord{
     }
 
     public static function actives() {
-        $query = "SELECT * FROM " . Servicio::$tabla . " WHERE activo = '1'" ;
+        $query = "SELECT * FROM " . Servicio::$tabla;
         $resultado = self::consultarSQL($query);
         return $resultado;
     }
