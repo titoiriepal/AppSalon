@@ -46,7 +46,7 @@ class ApiController{
 
     public static function fechas(){
         $fechas = Cita::getDates();
-        echo json_encode($fechas, JSON_PRETTY_PRINT);
+        echo json_encode($fechas);
     }
 
     public static function eliminar(){
