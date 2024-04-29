@@ -106,7 +106,7 @@ class ActiveRecord {
     public static function all() {
         $query = "SELECT * FROM " . static::$tabla;
         $resultado = self::consultarSQL($query);
-        return $resultado;
+        return $query;
     }
 
     //Todos los registros activos

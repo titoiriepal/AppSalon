@@ -10,8 +10,7 @@ class ApiController{
 
     public static function index(){
 
-        //$servicios = Servicio::all();
-        $servicios = [1,3,5];
+        $servicios = Servicio::all();
         echo json_encode($servicios);
 
     }
