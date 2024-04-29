@@ -11,7 +11,7 @@ class ApiController{
     public static function index(){
 
         $servicios = Servicio::actives();
-        echo json_encode($servicios);
+        echo json_encode($servicios, JSON_PRETTY_PRINT);
 
     }
 
