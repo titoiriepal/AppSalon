@@ -10,7 +10,7 @@ class ApiController{
 
     public static function index(){
 
-        $servicios = Servicio::actives();
+        $servicios = Servicio::allActive();
         echo json_encode($servicios, JSON_PRETTY_PRINT);
 
     }
@@ -41,12 +41,12 @@ class ApiController{
 
 
 
-        echo json_encode($respuesta);
+        echo json_encode($respuesta, JSON_PRETTY_PRINT);
     }
 
     public static function fechas(){
         $fechas = Cita::getDates();
-        echo json_encode($fechas);
+        echo json_encode($fechas, JSON_PRETTY_PRINT);
     }
 
     public static function eliminar(){

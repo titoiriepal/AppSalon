@@ -41,7 +41,7 @@ class ActiveRecord {
         }
 
         // liberar la memoria
-        //$resultado->free();
+        $resultado->free();
 
         // retornar los resultados
         return $array;
