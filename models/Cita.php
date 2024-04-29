@@ -28,7 +28,7 @@ class Cita extends ActiveRecord{
         foreach ($citas as $fecha){
             $fechas[] = $fecha->fecha;
         }
-        return $fechas;
+        return $citas;
     }
 
 }
