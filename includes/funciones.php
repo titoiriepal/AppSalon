@@ -27,3 +27,16 @@ function isAdmin() : void{
     }
 
 }
+
+function createArray($citas, $primerDia, $ultimoDia){
+
+    while ($primerDia !=  $ultimoDia) {
+        $array[$primerDia] = [];
+        $primerDia = date("Y-m-d",strtotime($primerDia."+ 1 days"));
+    }
+    foreach ($citas as $cita){
+        $array[$cita->fecha][]= $cita->hora;
+    }
+
+    return  $array;
+}

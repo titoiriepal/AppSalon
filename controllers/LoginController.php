@@ -9,6 +9,7 @@ use MVC\Router;
 class LoginController{
 
     public static function login(Router $router){
+
         $alertas = [];
 
         if($_SERVER["REQUEST_METHOD"] === "POST"){
@@ -24,6 +25,7 @@ class LoginController{
                 }else{//Si existe el usario validamos su contraseña y que ya esté confirmado
                     if($usuario->comprobarPasswordAndVerificado($auth->password)){//autentificamos al usuario
                         session_start();
+                        $_SESSION = [];
                         $_SESSION['id'] = $usuario->id;
                         $_SESSION['nombre'] = $usuario->nombre .' '. $usuario->apellido;
                         $_SESSION['email'] = $usuario->email;

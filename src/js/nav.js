@@ -2,6 +2,7 @@ let paso = 1;
 const pasoInicial = 1;
 const pasoFinal = 3
 let dia = '';
+var tablaFech = {};
 
 const cita = {
     usuarioId : '',
@@ -176,77 +177,113 @@ function identificarCliente(){
     
 }
 
-function seleccionarFecha(){
+async function seleccionarFecha(){
     const inputFecha = document.querySelector('#fecha');
-    const listaDatos = document.querySelector( "#work-hours" );
     inputFecha.addEventListener('input',function(e) {
+        
+        fecha = new Date(e.target.value);
+        fecha = fecha.toLocaleDateString("fr-CA");
+        
 
-        dia = new Date(e.target.value).getUTCDay();
+        if(!Object.keys(tablaFech).includes(fecha)){//comprobar que la fecha no esté en tabla fechas
+            conseguirFechas(fecha).then(tablaFechas => {
+            tablaFech = tablaFechas;
+            mostrarHorarios();
+            });
 
-        if([0].includes(dia)) {
-            e.target.value = '';
-            mostrarAlerta('Cerramos Sábados por la tarde y Domingos', 'error', '.formulario');
-            
         }else{
-            if([6].includes(dia)) {
-            listaDatos.innerHTML=`
-                <option value="09:00"></option>
-                <option value="09:15"></option>
-                <option value="09:30"></option>
-                <option value="09:45"></option>
-                <option value="10:00"></option>
-                <option value="10:15"></option>
-                <option value="10:30"></option>
-                <option value="10:45"></option>
-                <option value="11:00"></option>
-                <option value="11:15"></option>
-                <option value="11:30"></option>
-                <option value="11:45"></option>
-                <option value="12:00"></option>
-                <option value="12:15"></option>
-                <option value="12:30"></option>
-                <option value="12:45"></option>
-                <option value="13:00"></option>
-                <option value="13:15"></option>
-            `
-            }else{
-                listaDatos.innerHTML=`
-                    <option value="09:00"></option>
-                    <option value="09:15"></option>
-                    <option value="09:30"></option>
-                    <option value="09:45"></option>
-                    <option value="10:00"></option>
-                    <option value="10:15"></option>
-                    <option value="10:30"></option>
-                    <option value="10:45"></option>
-                    <option value="11:00"></option>
-                    <option value="11:15"></option>
-                    <option value="11:30"></option>
-                    <option value="11:45"></option>
-                    <option value="12:00"></option>
-                    <option value="12:15"></option>
-                    <option value="12:30"></option>
-                    <option value="12:45"></option>
-                    <option value="13:00"></option>
-                    <option value="13:15"></option>
-                    <option value="16:00"></option>
-                    <option value="16:15"></option>
-                    <option value="16:30"></option>
-                    <option value="16:45"></option>
-                    <option value="17:00"></option>
-                    <option value="17:15"></option>
-                    <option value="17:30"></option>
-                    <option value="17:45"></option>
-                    <option value="18:00"></option>
-                    <option value="18:15"></option>
-                    <option value="18:30"></option>
-                    <option value="18:45"></option>
-                `
-            }
-            cita.fecha = e.target.value
+            mostrarHorarios();//mostrar los horarios
         }
         
+        
     })
+}
+
+function mostrarHorarios(){
+    const listaDatos = document.querySelector( "#work-hours" );
+    const inputFecha = document.querySelector('#fecha');
+
+    var horarios = '';
+
+    fecha = new Date(inputFecha.value);
+    dia = fecha.getUTCDay();
+    fechaFormateada = fecha.toLocaleDateString("fr-CA");
+    
+    const tablaHorariosMorning = ['09:00:00',
+        '09:15:00',
+        '09:30:00',
+        '09:45:00',
+        '10:00:00',
+        '10:15:00',
+        '10:30:00',
+        '10:45:00',
+        '11:00:00',
+        '11:15:00',
+        '11:30:00',
+        '11:45:00',
+        '12:00:00',
+        '12:15:00',
+        '12:30:00',
+        '12:45:00',
+        '13:00:00',
+        '13:15:00',
+    ]
+    const tablaHorariosTarde = [
+        '16:30:00',
+        '16:45:00',
+        '17:00:00',
+        '17:15:00',
+        '17:30:00',
+        '17:45:00',
+        '18:00:00',
+        '18:15:00',
+        '18:30:00',
+        '18:45:00'
+    ]
+
+    if([0].includes(dia)) {
+        inputFecha.value = '';
+        mostrarAlerta('Cerramos Sábados por la tarde y Domingos', 'error', '.formulario');
+        
+    }else{
+        if([6].includes(dia)) {
+            var items = tablaHorariosMorning.filter(function (item){
+                if(!tablaFech[fechaFormateada].includes(item)){
+                    horarios += "<option value="+item +"></option>"
+                };
+            })
+        }else{
+            var items = tablaHorariosMorning.filter(function (item){
+                if(!tablaFech[fechaFormateada].includes(item)){
+                    horarios += "<option value="+item +"></option>"
+                };
+            })
+            var items = tablaHorariosTarde.filter(function (item){
+                if(!tablaFech[fechaFormateada].includes(item)){
+                    horarios += "<option value="+item +"></option>"
+                };
+            })
+        }
+        listaDatos.innerHTML = horarios;
+        cita.fecha=inputFecha.value;
+    }
+
+}
+
+
+
+async function conseguirFechas(fecha){
+
+    const datos = new FormData(); //Creamos el objeto en el que pasaremos los datos
+    datos.append('fecha', fecha);
+    try{
+        const url = `${location.origin}/api/horas-libres`;//URL  de la API a consumir
+        const resultado = await fetch(url,  {method:'POST', body:datos});
+        tablaFechas = await resultado.json();
+        return tablaFechas;
+    }catch(error){
+        console.log(error);
+    }
 }
 
 function seleccionarHora(){
@@ -411,7 +448,6 @@ async function reservarCita(){
         });
     
         const resultado = await respuesta.json(); //Convertir la respuesta del servidor a json para trabajar con ella de manera más sencilla
-        console.log(resultado);
         if(resultado.resultado){
             Swal.fire({
                 title: "GUARDADO",

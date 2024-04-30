@@ -11,6 +11,7 @@ class ApiController{
     public static function index(){
 
         $servicios = Servicio::allActive();
+        header("Content-type: application/json; charset=utf-8");
         echo json_encode($servicios, JSON_PRETTY_PRINT);
 
     }
@@ -40,13 +41,20 @@ class ApiController{
          }
 
 
-
+        header("Content-type: application/json; charset=utf-8");
         echo json_encode($respuesta, JSON_PRETTY_PRINT);
     }
 
     public static function fechas(){
         $fechas = Cita::getDates();
+        header("Content-type: application/json; charset=utf-8");
         echo json_encode($fechas);
+    }
+
+    public static function horas(){
+        $arrayHoras = Cita::getFreeHours($_POST['fecha']);
+        header("Content-type: application/json; charset=utf-8");
+        echo json_encode($arrayHoras);
     }
 
     public static function eliminar(){
