@@ -22,6 +22,11 @@ class Cita extends ActiveRecord{
         $this->activo = $args['activo'] ?? 1;
     }
 
+    public function comprobarCita(){
+        $cita = Cita::consultarSQL("SELECT * FROM " . self::$tabla . " WHERE fecha = '" . $this->fecha . "' AND hora = '" . $this->hora ."' LIMIT 1" );
+        return $cita;
+    }
+
     public static function getDates(){
         $citas = Cita::consultarSQL("SELECT DISTINCT(fecha) FROM " . self::$tabla . " ORDER BY fecha");
         $fechas = [];

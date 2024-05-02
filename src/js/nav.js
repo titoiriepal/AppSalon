@@ -35,7 +35,7 @@ function iniciarApp(){
 
 }
 
-function mostrarSeccion(){
+function mostrarSeccion(){ //Muestra las diferentes secciones del apartado CITA según naveguemos con los botones o los tabs
 
     //Ocultar la sección que se está mostrando
     const seccionAnterior = document.querySelector('.mostrar');
@@ -56,7 +56,7 @@ function mostrarSeccion(){
 }
 
 
-function tabs() {
+function tabs() { //Navegación por Tabs
     const botones = document.querySelectorAll('.tabs button');
     
     botones.forEach( boton => {
@@ -75,14 +75,14 @@ function botonesPaginador() {
     const paginaSiguiente = document.querySelector('#siguiente');
     
     
-    if (paso === 1) {
+    if (paso === 1) { //Si estamos en la primera pagina ocultamos el botón de 'Anterior'
         paginaAnterior.classList.add('ocultar');
         paginaSiguiente.classList.remove('ocultar');
-    } else if (paso === 3) {
+    } else if (paso === 3) { //Si estamos en la última página, ocultamos el botón de siguiente y Mostramos el resumen de la cita
         paginaAnterior.classList.remove('ocultar');
         paginaSiguiente.classList.add('ocultar');
         mostrarResumen();
-    }else{
+    }else{//Si no es ni la primera ni la última página, mostramos ambos botones.
         paginaSiguiente.classList.remove('ocultar');
         paginaAnterior.classList.remove('ocultar');
     }
@@ -110,7 +110,7 @@ function anteriorPagina() {
     })
 }
 
-async function consultarAPI() {
+async function consultarAPI() { //Nos trae todos los servicios ACTIVOS de la BD
     try{
         const url = `${location.origin}/api/servicios`;//URL  de la API a consumir
         const resultado = await fetch(url);
@@ -121,7 +121,7 @@ async function consultarAPI() {
     }
 }
 
-function mostrarServicios(servicios){
+function mostrarServicios(servicios){ //Mostramos cada uno de los servicios activos
     servicios.forEach(servicio =>{
         const {id, nombre, precio} = servicio;
             
@@ -149,7 +149,7 @@ function mostrarServicios(servicios){
     });
 }
 
-function seleccionarServicio(servicio){
+function seleccionarServicio(servicio){//Seleccionar o deseleccionar servicios de la cita
     const {id} = servicio;
     const {servicios} = cita;
 
@@ -158,20 +158,18 @@ function seleccionarServicio(servicio){
 
     //Comprobar si un servicio ya está en la lista de servicios anteriores
     if(servicios.some(agregado => agregado.id === id)){
-        cita.servicios = servicios.filter(agregado => agregado.id !==id)
+        cita.servicios = servicios.filter(agregado => agregado.id !==id) //Reescribimos los servicios obviando el servicio que tenga el mismo id que el servicio clickeado
 
-    }else{
-        cita.servicios = [...servicios, servicio]
-    
+    }else{ //El servicio no está en la lista de servicios
+        cita.servicios = [...servicios, servicio] //añadimos el servicio a los servicios de la cita
     }
-
-    
-    divServicio.classList.toggle('seleccionado');
+ 
+    divServicio.classList.toggle('seleccionado'); //Añadimos o quitamos la clase de seleccionado
 
     
 }
 
-function identificarCliente(){
+function identificarCliente(){ //Pasamos el nombre y el id del cliente a los datos de la cita
     cita.nombre = document.querySelector( '#nombre' ).value;
     cita.usuarioId = document.querySelector( '#usuarioId' ).value.toString();
     
@@ -179,16 +177,16 @@ function identificarCliente(){
 
 async function seleccionarFecha(){
     const inputFecha = document.querySelector('#fecha');
-    inputFecha.addEventListener('input',function(e) {
+    inputFecha.addEventListener('input',function(e) { //Cuando seleccionamos una nueva fecha en el input 
         
         fecha = new Date(e.target.value);
-        fecha = fecha.toLocaleDateString("fr-CA");
+        fecha = fecha.toLocaleDateString("fr-CA"); //Pasámos la fecha a formato ('Y-m-d')
         
 
-        if(!Object.keys(tablaFech).includes(fecha)){//comprobar que la fecha no esté en tabla fechas
-            conseguirFechas(fecha).then(tablaFechas => {
-            tablaFech = tablaFechas;
-            mostrarHorarios();
+        if(!Object.keys(tablaFech).includes(fecha)){//comprobar que la fecha no esté en tabla fechas que podemos tener en memoria
+            conseguirFechas(fecha).then(tablaFechas => { //Si los horarios de la fecha no están en memoria descargamos los horarios de la fecha señalada, los de los diez días anteriores y los de los diez días posteriores, para intentar no sobrecargar las consultas a la BD. Podemos cambiar el número de días que devuelve la API desde el back-end
+            tablaFech = tablaFechas;//Damos el valor al objeto tablaFech de las fechas que nos trae la base de datos
+            mostrarHorarios();//Iniciamos los horarios del Input según estén disponibles en la base de datos
             });
 
         }else{
@@ -204,8 +202,8 @@ function mostrarHorarios(){
     const inputFecha = document.querySelector('#fecha');
 
     var horarios = '';
-
-    fecha = new Date(inputFecha.value);
+    fecha = new Date (inputFecha.value);
+    //Leemos la fecha del input correspondiente y le damos formato ('Y-m-d').
     dia = fecha.getUTCDay();
     fechaFormateada = fecha.toLocaleDateString("fr-CA");
     
@@ -241,18 +239,18 @@ function mostrarHorarios(){
         '18:45:00'
     ]
 
-    if([0].includes(dia)) {
+    if([0].includes(dia)) { //si el día es Domingo, mensaje de error
         inputFecha.value = '';
         mostrarAlerta('Cerramos Sábados por la tarde y Domingos', 'error', '.formulario');
         
     }else{
-        if([6].includes(dia)) {
-            var items = tablaHorariosMorning.filter(function (item){
-                if(!tablaFech[fechaFormateada].includes(item)){
+        if([6].includes(dia)) { //si el día es Sábado, solo incluimos en las horas seleccionables los horarios de mañana que estén disponibles
+            var items = tablaHorariosMorning.filter(function (item){ //Recorremos la tabla de horarios y por cada horario que no esté ya reservado en la bd creamos una opción para seleccionarlo
+                if(!tablaFech[fechaFormateada].includes(item)){ 
                     horarios += "<option value="+item +"></option>"
                 };
             })
-        }else{
+        }else{//Si es un día de diario, incluimos los horarios de tarde y de mañana.
             var items = tablaHorariosMorning.filter(function (item){
                 if(!tablaFech[fechaFormateada].includes(item)){
                     horarios += "<option value="+item +"></option>"
@@ -264,15 +262,13 @@ function mostrarHorarios(){
                 };
             })
         }
-        listaDatos.innerHTML = horarios;
-        cita.fecha=inputFecha.value;
+        listaDatos.innerHTML = horarios; //pasamos los horarios a los options del Select de horarios
+        cita.fecha=inputFecha.value; // Inicializamos la fecha de la cita
     }
 
 }
 
-
-
-async function conseguirFechas(fecha){
+async function conseguirFechas(fecha){ //Consultamos la BD con esta api pasándole la fecha elegida para la cita
 
     const datos = new FormData(); //Creamos el objeto en el que pasaremos los datos
     datos.append('fecha', fecha);
@@ -286,12 +282,12 @@ async function conseguirFechas(fecha){
     }
 }
 
-function seleccionarHora(){
+function seleccionarHora(){ //seleccionamos los horarios para la nueva cita filtrandolos por los horarios disponibles
     const tablaMinutos = ['00', '15', '30', '45'];
 
     const inputHora = document.querySelector('#hora');  
     inputHora.addEventListener('input', function (e) {
-        
+        //VALIDACIÓN DE LA HORA DE LA CITA. Dentro de los horarios disponibles. Las citas han de ser a ciertas horas determinadas, que acaban on los minutos de la tabla 'tablaminutos'
         const horaCita = e.target.value;
         const hora = horaCita.split(':')[0];
         const minutos = horaCita.split(':')[1];
@@ -448,11 +444,20 @@ async function reservarCita(){
         });
     
         const resultado = await respuesta.json(); //Convertir la respuesta del servidor a json para trabajar con ella de manera más sencilla
+        console.log(resultado);
         if(resultado.resultado){
             Swal.fire({
                 title: "GUARDADO",
                 text: "Cita creada correctamente",
                 icon: "success"
+              }).then( () =>{
+                window.location.reload();
+              })
+        }else{
+            Swal.fire({
+                title: "ERROR",
+                text: resultado.error,
+                icon: "error"
               }).then( () =>{
                 window.location.reload();
               })
